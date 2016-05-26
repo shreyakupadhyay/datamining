@@ -1,2 +1,2 @@
-# datamining
-internship work
+# datamining and scraping
+getting data from a university website
