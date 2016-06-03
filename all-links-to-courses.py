@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-headers = headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/48.0.2564.82 Chrome/48.0.2564.82 Safari/537.36"}
+import csv
+headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/48.0.2564.82 Chrome/48.0.2564.82 Safari/537.36"}
 
 html = requests.get('http://www.alhosnu.ae/WS/Site/AcademicApp/FacultiesAndDepartments.aspx',headers = headers)
 htmltext = html.text
@@ -20,7 +21,7 @@ for i in range(0,length_results):
     results_links = re.findall(pattern,str(results_courses[i]))
     all_results_links.append(results_links)
     #print results_links
-print all_results_links
+print len(all_results_links)
 """
 professors sid
 """
@@ -41,12 +42,12 @@ for i in range(0,length_all_results_links):
         if(len(results_regex_prof)!=0):
             all_prof_sid.append(results_regex_prof)
         #print results_regex_prof
-print all_prof_sid
+#print all_prof_sid
 
 """
 individual professors data
 """
-
+c = csv.writer(open("data.csv", "wt"))
 #pro_indiv_link = requests.get('http://www.alhosnu.ae/WS/Site/AcademicApp/StaffMember.aspx?sid=69fb82da-a176-40c5-8fa9-21e94558457b',headers = headers)
 length_all_prof_sid = len(all_prof_sid)
 for i in range(0,length_all_prof_sid):
@@ -55,12 +56,21 @@ for i in range(0,length_all_prof_sid):
     results_indiv_link = soup_indiv_link.findAll('td',attrs={'class':'BlackLink'})
     results_indiv_link_post = soup_indiv_link.findAll('div',attrs={'class':'BlackLink'})
     results_indiv_link_name = soup_indiv_link.findAll('td',attrs={'class':'InnerPageHeader'})
-    for tag2 in results_indiv_link_name:
-        print tag2.text
-    for tag1 in results_indiv_link_post:
-        print tag1.text
+    #for tag2 in results_indiv_link_name:
+        #print tag2.text,"TAG2"
+    print results_indiv_link_name[0].text
+    #for tag1 in results_indiv_link_post:
+        #print tag1.text,"TAG1"
+    print results_indiv_link_post[0].text
+    try:
+        c.writerow([results_indiv_link_name[0].text,results_indiv_link_post[0].text])
+    except UnicodeEncodeError:
+        print 'yes'
     for tag in results_indiv_link:
-        print tag.text
-
+        print tag.text,"TAG"
+    try:
+        c.writerow([results_indiv_link[1].text,results_indiv_link[3].text,results_indiv_link[5].text,results_indiv_link[7].text,results_indiv_link[9].text])
+    except UnicodeEncodeError:
+        print 'yes'
 #for i in range(0,len(results_indiv_link)):
 #    print results_indiv_link[i]
