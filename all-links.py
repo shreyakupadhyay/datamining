@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
-import requests
-import re
+import requests,re
 
 
 """
@@ -23,11 +22,6 @@ def get_links(html):
         soup = BeautifulSoup(htmltext)
         results = soup.findAll('a')
         check(results)
-        #for link in soup.findAll('a'):
-        #    val = val + 1
-        #    all_links_array.append(link['href'])
-            #update_count = update_count + 1
-        #return val
     except KeyError:
         print "Next"
 
@@ -39,12 +33,11 @@ val = 1
 base_url = 'http://www.alhosnu.ae/WS/Site/Home/Home.aspx'
 html = requests.get(base_url)
 get_links(html)
-count = 0
-update_count = len(all_links_array)
+
 depth = 1
 
 
-val = update_count
+val = len(all_links_array)
 
 """
 In this depth is set to 3 this can be done to any value. Here required value is 20
@@ -53,21 +46,19 @@ In this depth is set to 3 this can be done to any value. Here required value is 
 """
 Here this type of categorisation is done for links on three basis it can be genralised to more types.
 """
+count = 0
 while(depth!=3):
     for k in range(count,update_count):
         print all_links_array[k]
         if(len(re.findall(re.compile('^'+ re.escape('/')),all_links_array[k]))!=0):
-            html = requests.get('http://www.alhosnu.ae'+all_links_array[k])
-            get_links(html)
+            get_links(requests.get('http://www.alhosnu.ae'+all_links_array[k]))
             print val , "VAL"
         elif(len(re.findall(re.compile('^'+re.escape('../')),all_links_array[k]))!=0):
             all_links_array[k] =  all_links_array[k].replace('../','/')
-            html = requests.get('http://www.alhosnu.ae/WS/Site'+all_links_array[k])
-            get_links(html)
+            get_links(requests.get('http://www.alhosnu.ae/WS/Site'+all_links_array[k]))
             print val , "VAL"
         elif(len(re.findall(re.compile('^http:'+re.escape('//')+'\D'),all_links_array[k]))!=0):
-            html = requests.get(all_links_array[k])
-            get_links(html)
+            get_links(requests.get(all_links_array[k]))
             print val , "VAL"
     print all_links_array
     print count , "COUNT"
