@@ -41,8 +41,7 @@ for i in range(0,length_all_results_links):
         results_regex_prof = re.findall(pattern_regex_prof,str(results_prof[j]))
         if(len(results_regex_prof)!=0):
             all_prof_sid.append(results_regex_prof)
-        #print results_regex_prof
-#print all_prof_sid
+        
 
 """
 individual professors data
@@ -56,11 +55,8 @@ for i in range(0,length_all_prof_sid):
     results_indiv_link = soup_indiv_link.findAll('td',attrs={'class':'BlackLink'})
     results_indiv_link_post = soup_indiv_link.findAll('div',attrs={'class':'BlackLink'})
     results_indiv_link_name = soup_indiv_link.findAll('td',attrs={'class':'InnerPageHeader'})
-    #for tag2 in results_indiv_link_name:
-        #print tag2.text,"TAG2"
+    
     print results_indiv_link_name[0].text
-    #for tag1 in results_indiv_link_post:
-        #print tag1.text,"TAG1"
     print results_indiv_link_post[0].text
     try:
         c.writerow([results_indiv_link_name[0].text,results_indiv_link_post[0].text])
@@ -72,5 +68,4 @@ for i in range(0,length_all_prof_sid):
         c.writerow([results_indiv_link[1].text,results_indiv_link[3].text,results_indiv_link[5].text,results_indiv_link[7].text,results_indiv_link[9].text])
     except UnicodeEncodeError:
         print 'yes'
-#for i in range(0,len(results_indiv_link)):
-#    print results_indiv_link[i]
+
